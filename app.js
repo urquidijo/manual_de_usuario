@@ -20,6 +20,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const backToTopBtn = document.getElementById('backToTop');
   const toast = document.getElementById('toast');
 
+  // Mobile Drawer Elements
+  const sidebar = document.getElementById('sidebar');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+  const mobileTocToggle = document.getElementById('mobileTocToggle');
+  const floatingTocBtn = document.getElementById('floatingTocBtn');
+  const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+
+  function openMobileDrawer() {
+    if (sidebar) sidebar.classList.add('open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileDrawer() {
+    if (sidebar) sidebar.classList.remove('open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (mobileTocToggle) mobileTocToggle.addEventListener('click', openMobileDrawer);
+  if (floatingTocBtn) floatingTocBtn.addEventListener('click', openMobileDrawer);
+  if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeMobileDrawer);
+  if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeMobileDrawer);
+
   let currentRole = localStorage.getItem('taller_manual_role') || 'all';
 
   // 1. Role Switching
@@ -113,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (target) {
             target.scrollIntoView({ behavior: 'smooth' });
           }
+          closeMobileDrawer();
         });
 
         tocNav.appendChild(link);

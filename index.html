@@ -25,6 +25,11 @@
 
       <!-- Quick Search & Actions -->
       <div class="nav-actions">
+        <button id="mobileTocToggle" class="btn-icon btn-toc-mobile" title="Abrir índice del manual">
+          <span class="toc-icon">📑</span>
+          <span class="toc-mobile-text">Índice</span>
+        </button>
+
         <div class="search-box">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"></circle>
@@ -45,7 +50,8 @@
               <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
               <rect x="6" y="14" width="12" height="8"></rect>
             </svg>
-            <span>Descargar / Imprimir PDF</span>
+            <span class="print-text-full">Descargar / Imprimir PDF</span>
+            <span class="print-text-mobile">PDF</span>
           </button>
         </div>
       </div>
@@ -87,11 +93,17 @@
 
   <!-- Main Container -->
   <div class="main-layout">
-    <!-- Sticky Sidebar Table of Contents -->
+    <!-- Overlay Backdrop for Mobile Sidebar -->
+    <div id="sidebarBackdrop" class="sidebar-backdrop no-print"></div>
+
+    <!-- Sticky Sidebar Table of Contents (Desktop) / Slide-out Drawer (Mobile) -->
     <aside class="sidebar no-print" id="sidebar">
       <div class="sidebar-header">
-        <h3>Índice del Manual</h3>
-        <span class="toc-badge" id="tocBadge">Todo</span>
+        <div class="sidebar-header-left">
+          <h3>Índice del Manual</h3>
+          <span class="toc-badge" id="tocBadge">Todo</span>
+        </div>
+        <button id="closeSidebarBtn" class="btn-close-sidebar no-desktop" title="Cerrar índice">&times;</button>
       </div>
       <div class="toc-scroll-area">
         <nav id="tocNav" class="toc-nav">
@@ -796,7 +808,8 @@ PASOS DE VERIFICACIÓN SUGERIDOS:
         </section>
       </article>
 
-      <!-- Back to top button -->
+      <!-- Floating action buttons (mobile & desktop) -->
+      <button id="floatingTocBtn" class="btn-floating-toc no-print" title="Abrir índice">📑 Índice</button>
       <button id="backToTop" class="btn-floating no-print" title="Volver arriba">↑</button>
     </main>
   </div>

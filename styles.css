@@ -1214,57 +1214,321 @@ body {
 }
 
 /* ==========================================================================
-   Responsive Adaptations
+   Responsive UI Controls & Mobile Drawer
+   ========================================================================== */
+
+.print-text-mobile {
+  display: none;
+}
+
+.print-text-full {
+  display: inline;
+}
+
+.btn-close-sidebar {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  display: none;
+}
+
+.btn-close-sidebar:hover {
+  color: var(--text-main);
+}
+
+.sidebar-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn-toc-mobile {
+  display: none;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.45rem 0.7rem;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 190;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.sidebar-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.btn-floating-toc {
+  position: fixed;
+  bottom: 2rem;
+  left: 1.5rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: 999px;
+  background: var(--bg-surface-elevated);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 0.45rem;
+  z-index: 89;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-floating-toc:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ==========================================================================
+   Responsive Adaptations (Tablet & Mobile-First)
    ========================================================================== */
 
 @media (max-width: 1024px) {
+  /* Off-canvas mobile drawer for Table of Contents */
   .sidebar {
-    display: none; /* Can be toggled if needed */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: min(85vw, 320px);
+    height: 100vh;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 5px 0 25px rgba(0, 0, 0, 0.25);
+    background-color: var(--bg-surface);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .btn-close-sidebar {
+    display: block;
+  }
+
+  .btn-toc-mobile {
+    display: inline-flex;
+  }
+
+  .btn-floating-toc {
+    display: inline-flex;
   }
 
   .content-viewport {
-    padding: 1.5rem;
+    padding: 2rem 1.8rem;
   }
 
   .manual-section {
-    padding: 1.8rem;
+    padding: 2.2rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-nav {
+    height: auto;
+    position: sticky;
+    top: 0;
+  }
+
+  .nav-container {
+    padding: 0.65rem 1rem;
+    flex-wrap: wrap;
+    height: auto;
+    gap: 0.65rem;
+  }
+
+  .brand-group {
+    flex: 1;
+  }
+
+  .brand-info h1 {
+    font-size: 0.98rem;
+    line-height: 1.2;
+  }
+
+  .brand-info .subtitle {
+    display: none; /* Hide long subtitle on phones to save space */
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: nowrap;
+  }
+
+  .search-box {
+    order: 3;
+    width: 100%;
+    margin-top: 0.2rem;
+  }
+
+  .search-box input {
+    width: 100% !important;
+    font-size: 0.85rem;
+  }
+
+  .print-text-full {
+    display: none;
+  }
+
+  .print-text-mobile {
+    display: inline;
+    font-weight: 700;
+  }
+
+  .btn-action {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .role-selector-bar {
+    padding: 0.4rem 0.8rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .role-tabs {
+    gap: 0.35rem;
+  }
+
+  .tab-btn {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .tab-tag {
+    display: none; /* Hide sub-tag on small screens for compact pills */
+  }
+
+  .content-viewport {
+    padding: 1.2rem 0.9rem;
+  }
+
+  .manual-section {
+    padding: 1.6rem 1.2rem;
   }
 }
 
 @media (max-width: 640px) {
-  .nav-container {
-    flex-direction: column;
-    height: auto;
-    padding: 0.8rem 1rem;
-    gap: 0.8rem;
-  }
-
-  .nav-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .search-box input {
-    width: 160px;
-  }
-
-  .search-box input:focus {
-    width: 200px;
-  }
-
-  .doc-title {
-    font-size: 1.5rem;
-  }
-
-  .doc-subtitle {
-    font-size: 1.15rem;
-  }
-
   .content-viewport {
-    padding: 0.8rem;
+    padding: 0.85rem 0.5rem;
   }
 
   .manual-section {
-    padding: 1.2rem;
+    padding: 1.4rem 0.85rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1.5rem;
+  }
+
+  .doc-meta-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .doc-title {
+    font-size: 1.4rem;
+    line-height: 1.25;
+    letter-spacing: -0.3px;
+  }
+
+  .doc-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.35;
+    margin-bottom: 1rem;
+  }
+
+  .lead-text {
+    font-size: 0.92rem;
+  }
+
+  .heading-number {
+    font-size: 1.15rem;
+    line-height: 1.35;
+  }
+
+  .subheading {
+    font-size: 0.98rem;
+  }
+
+  .vark-cards-grid,
+  .interface-zones-grid,
+  .tabs-display-box {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .vark-card {
+    padding: 0.85rem;
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 0.55rem 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  .terminal-card {
+    padding: 0.8rem 0.9rem;
+  }
+
+  .terminal-card code {
+    font-size: 0.72rem;
+  }
+
+  .formula-box {
+    padding: 0.9rem 1rem;
+  }
+
+  .math-expr {
+    font-size: 0.82rem;
+    word-break: break-all;
+  }
+
+  .checklist-bullet li,
+  .steps-list li {
+    font-size: 0.88rem;
+  }
+
+  .callout {
+    padding: 0.95rem 1.1rem;
+    font-size: 0.88rem;
+  }
+
+  .btn-floating {
+    bottom: 1.5rem;
+    right: 1.2rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .btn-floating-toc {
+    bottom: 1.5rem;
+    left: 1rem;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.78rem;
   }
 }
