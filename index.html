@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manuales de Usuario — Plataforma IoT de Diagnóstico Vehicular Preventivo OBD-II</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body data-theme="light">
+  <!-- Top Navigation Bar -->
+  <header class="top-nav no-print">
+    <div class="nav-container">
+      <div class="brand-group">
+        <div class="brand-logo">
+          <span class="logo-badge">OBD-II</span>
+        </div>
+        <div class="brand-info">
+          <h1>Manuales de Usuario — Diagnóstico Vehicular</h1>
+          <p class="subtitle">Sistema IoT Preventivo con Inteligencia Artificial & Flota UAGRM</p>
+        </div>
+      </div>
+
+      <!-- Quick Search & Actions -->
+      <div class="nav-actions">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Buscar en manuales (ej. ELM327, DTC, orden, IA)..." autocomplete="off">
+          <button id="clearSearch" class="btn-clear" title="Limpiar búsqueda" style="display: none;">&times;</button>
+        </div>
+
+        <button id="themeToggle" class="btn-icon" title="Cambiar tema día/noche">
+          <span class="theme-icon">🌓</span>
+        </button>
+
+        <div class="print-dropdown-wrapper">
+          <button id="printBtn" class="btn-action btn-primary" title="Imprimir o guardar como documento PDF">
+            <svg class="btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 6 2 18 2 18 9"></polyline>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+              <rect x="6" y="14" width="12" height="8"></rect>
+            </svg>
+            <span>Descargar / Imprimir PDF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Role Selector Ribbon -->
+  <nav class="role-selector-bar no-print">
+    <div class="role-tabs-container">
+      <div class="role-tabs" id="roleTabs">
+        <button class="tab-btn active" data-role="all">
+          <span class="tab-badge">📖</span>
+          <span class="tab-title">Manual Completo</span>
+          <span class="tab-tag">Visión General</span>
+        </button>
+        <button class="tab-btn" data-role="parte0">
+          <span class="tab-badge">🌐</span>
+          <span class="tab-title">Parte 0: Introducción</span>
+          <span class="tab-tag">Común a todos</span>
+        </button>
+        <button class="tab-btn" data-role="parte1">
+          <span class="tab-badge">🛡️</span>
+          <span class="tab-title">Parte 1: Administrador</span>
+          <span class="tab-tag">Flota, Usuarios & PDF</span>
+        </button>
+        <button class="tab-btn" data-role="parte2">
+          <span class="tab-badge">🔧</span>
+          <span class="tab-title">Parte 2: Mecánico</span>
+          <span class="tab-tag">Órdenes & Hipótesis IA</span>
+        </button>
+        <button class="tab-btn" data-role="parte3">
+          <span class="tab-badge">📱</span>
+          <span class="tab-title">Parte 3: Inspector</span>
+          <span class="tab-tag">App Móvil & Escaneo OBD</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="main-layout">
+    <!-- Sticky Sidebar Table of Contents -->
+    <aside class="sidebar no-print" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Índice del Manual</h3>
+        <span class="toc-badge" id="tocBadge">Todo</span>
+      </div>
+      <div class="toc-scroll-area">
+        <nav id="tocNav" class="toc-nav">
+          <!-- Populated by JS -->
+        </nav>
+      </div>
+
+      <!-- Quick Role Switcher & Demo Credentials -->
+      <div class="sidebar-footer">
+        <div class="demo-box">
+          <div class="demo-header">
+            <strong>Credenciales de Prueba</strong>
+            <span class="demo-chip">taller123</span>
+          </div>
+          <div class="demo-list">
+            <div class="demo-item" onclick="copyCred('admin@uagrm.edu.bo')">
+              <span class="role-mini-badge badge-admin">Admin</span>
+              <code>admin@uagrm.edu.bo</code>
+              <span class="copy-hint">📋</span>
+            </div>
+            <div class="demo-item" onclick="copyCred('mecanico@uagrm.edu.bo')">
+              <span class="role-mini-badge badge-docente">Mecánico</span>
+              <code>mecanico@uagrm.edu.bo</code>
+              <span class="copy-hint">📋</span>
+            </div>
+            <div class="demo-item" onclick="copyCred('inspector@uagrm.edu.bo')">
+              <span class="role-mini-badge badge-student">Inspector</span>
+              <code>inspector@uagrm.edu.bo</code>
+              <span class="copy-hint">📋</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Reader -->
+    <main class="content-viewport" id="contentViewport">
+      <!-- Search status banner (hidden by default) -->
+      <div id="searchBanner" class="search-status-banner no-print" style="display: none;">
+        <span>Resultados para "<strong id="searchQueryText"></strong>": <span id="searchCount">0</span> coincidencias encontradas.</span>
+        <button id="resetSearchBtn" class="btn-link">Restablecer vista</button>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- PARTE 0: INTRODUCCIÓN Y ACCESO (COMÚN A LOS TRES ROLES) -->
+      <!-- ======================================================== -->
+      <article class="manual-section" id="section-parte0" data-role-section="parte0">
+        <div class="document-header">
+          <div class="doc-meta-bar">
+            <span class="doc-badge badge-common">Común a los Tres Roles</span>
+            <span class="doc-pages">Páginas 1 – 5</span>
+          </div>
+          <h1 class="doc-title">Manual de Usuario — Sistema IoT Vehicular</h1>
+          <h2 class="doc-subtitle">Parte 0 · Introducción y acceso a la plataforma</h2>
+          <div class="callout callout-intro">
+            La <strong>Plataforma de Diagnóstico Vehicular Preventivo OBD-II con Inteligencia Artificial</strong> es una solución integral diseñada para la supervisión y mantenimiento de la flota automotriz de la <strong>UAGRM</strong>. Permite recolectar datos telemétricos y códigos de falla (DTCs) mediante escáneres OBD-II Bluetooth (ELM327) desde una aplicación móvil Android, procesarlos en una API central con <strong>análisis interpretativo por IA (Claude API)</strong>, generar órdenes de trabajo automáticas y despachar alertas multicanal vía <strong>Telegram, Correo Electrónico y Notificaciones Push (n8n / FCM)</strong>.
+          </div>
+        </div>
+
+        <p class="lead-text">Este manual está estructurado en cuatro documentos especializados según el rol operativo del usuario:</p>
+
+        <div class="table-responsive">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th style="width: 45%;">Documento</th>
+                <th style="width: 55%;">Dirigido a</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Parte 0 · Introducción y acceso</strong> (este documento)</td>
+                <td>Todos los usuarios (Administradores, Mecánicos, Inspectores)</td>
+              </tr>
+              <tr>
+                <td><strong>Parte 1 · Manual del Administrador</strong></td>
+                <td>Jefes de transporte, coordinadores de flota y personal administrativo</td>
+              </tr>
+              <tr>
+                <td><strong>Parte 2 · Manual del Mecánico</strong></td>
+                <td>Técnicos de mantenimiento automotriz y mecánicos de taller</td>
+              </tr>
+              <tr>
+                <td><strong>Parte 3 · Manual del Inspector</strong></td>
+                <td>Inspectores de flota, conductores asignados y encargados de movilidades</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr class="section-divider">
+
+        <section id="p0-sec1" class="guide-block">
+          <h3 class="heading-number">1. ¿Qué es OBD-II y para qué sirve el sistema?</h3>
+          <p><strong>OBD-II (On-Board Diagnostics II)</strong> es el estándar internacional de diagnóstico a bordo integrado en todos los vehículos modernos. Permite comunicarse con la computadora del vehículo (ECU) para monitorear el estado del motor, sensores de emisión y subsistemas auxiliares.</p>
+
+          <p>Cuando la computadora detecta una anomalía en un componente o emisión de gases, enciende la luz de advertencia en el tablero (<strong>Check Engine / MIL</strong>) y almacena uno o más <strong>Códigos de Diagnóstico de Falla (DTC)</strong>.</p>
+
+          <div class="vark-cards-grid">
+            <div class="vark-card vark-v">
+              <div class="vark-letter">P</div>
+              <div class="vark-details">
+                <h4>Powertrain (Tren Motriz)</h4>
+                <p>Motor, transmisión, sistema de encendido, inyección de combustible y emisiones (ej. P0300, P0171).</p>
+              </div>
+            </div>
+            <div class="vark-card vark-a">
+              <div class="vark-letter">B</div>
+              <div class="vark-details">
+                <h4>Body (Carrocería)</h4>
+                <p>Sistemas interiores, climatización, airbags, cierre centralizado y confort dentro del habitáculo.</p>
+              </div>
+            </div>
+            <div class="vark-card vark-r">
+              <div class="vark-letter">C</div>
+              <div class="vark-details">
+                <h4>Chassis (Chasis)</h4>
+                <p>Frenos ABS, dirección asistida, suspensión electrónica y control de estabilidad (ESP).</p>
+              </div>
+            </div>
+            <div class="vark-card vark-k">
+              <div class="vark-letter">U</div>
+              <div class="vark-details">
+                <h4>Network (Red / Comunicación)</h4>
+                <p>Fallas en el bus CAN de comunicación entre diferentes computadoras y módulos del vehículo.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-info">
+            <strong>Clasificación de Códigos de Falla:</strong>
+            <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+              <li><strong>CONFIRMED (Confirmados - Modo 03):</strong> Fallas activas que encendieron o mantienen el testigo Check Engine activo.</li>
+              <li><strong>PENDING (Pendientes - Modo 07):</strong> Fallas detectadas durante el ciclo de conducción actual que aún requieren confirmación en un segundo ciclo.</li>
+              <li><strong>PERMANENT (Permanentes - Modo 0A):</strong> Códigos históricos que no se pueden borrar por escáner manual hasta que la ECU compruebe que el problema fue solucionado físicamente.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="p0-sec2" class="guide-block">
+          <h3 class="heading-number">2. Los tres roles del sistema y matriz de permisos</h3>
+          <p>El sistema implementa el principio de <strong>separación de deberes</strong> mediante un modelo de control de acceso basado en permisos granulares (RBAC):</p>
+          <div class="table-responsive">
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Rol</th>
+                  <th style="width: 75%;">Responsabilidades y Atribuciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="role-badge role-badge-admin">Administrador</span></td>
+                  <td>Control total de la flota: gestión de cuentas de usuario, catálogo de vehículos (alta, edición, asignación de responsables), supervisión global de escaneos, asignación manual de órdenes de trabajo a mecánicos, autorización de cierre de órdenes, consulta de hipótesis técnicas de IA y exportación de reportes PDF ejecutivos.</td>
+                </tr>
+                <tr>
+                  <td><span class="role-badge role-badge-docente">Mecánico</span></td>
+                  <td>Gestión técnica de taller: consulta de vehículos y escaneos, lectura detallada de la <strong>Hipótesis de IA</strong> (causas probables, pasos de verificación física y correlaciones), toma de órdenes de trabajo abiertas, actualización de progreso (`IN_PROGRESS`), registro de bitácora y cierre técnico de la orden con firma de responsabilidad mecánica.</td>
+                </tr>
+                <tr>
+                  <td><span class="role-badge role-badge-student">Inspector</span></td>
+                  <td>Operación en campo: utilización de la <strong>App Móvil Android</strong>, emparejamiento Bluetooth con el escáner ELM327, escaneo OBD-II periódico de vehículos asignados, visualización del <strong>Monitor en Vivo</strong> (RPM, temperatura, velocidad) y recepción de alertas tempranas sobre severidad de fallas.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="quote-box">
+            La interfaz (web o móvil) <strong>adapta sus menús automáticamente</strong> según los permisos del usuario autenticado: un inspector no ve la gestión de usuarios ni órdenes administrativas, mientras que el mecánico ve su panel de órdenes de reparación y el administrador tiene la vista 360° de la flota.
+          </div>
+        </section>
+
+        <section id="p0-sec3" class="guide-block">
+          <h3 class="heading-number">3. Requisitos para usar el sistema</h3>
+          
+          <h4 class="subheading">Para la Plataforma Web (Administradores y Mecánicos)</h4>
+          <ul class="checklist-bullet">
+            <li><strong>Navegador web moderno:</strong> Google Chrome, Microsoft Edge, Mozilla Firefox o Safari actualizados.</li>
+            <li><strong>Conexión a internet:</strong> Acceso a la red universitaria o conexión externa segura (HTTPS).</li>
+            <li><strong>Cuenta de usuario:</strong> Correo institucional (`@uagrm.edu.bo`) y contraseña autorizada.</li>
+          </ul>
+
+          <h4 class="subheading">Para la Aplicación Móvil (Inspectores y Mecánicos en Campo)</h4>
+          <ul class="checklist-bullet">
+            <li><strong>Dispositivo móvil:</strong> Smartphone o tablet con sistema operativo <strong>Android (versiones 5.0 Lollipop a Android 15)</strong> con conectividad Bluetooth activa. <em>(Nota: iOS no es compatible debido a que Apple restringe Bluetooth Classic SPP)</em>.</li>
+            <li><strong>Escáner OBD-II Bluetooth:</strong> Adaptador estándar <strong>ELM327 v1.5 o v2.1</strong> (Bluetooth Classic / SPP).</li>
+            <li><strong>Vehículo con puerto OBD-II estándar:</strong> Generalmente ubicado bajo el volante, en la consola central o cerca de la caja de fusibles interna.</li>
+          </ul>
+        </section>
+
+        <section id="p0-sec4" class="guide-block">
+          <h3 class="heading-number">4. Iniciar sesión (Login Web y Móvil)</h3>
+          <ol class="steps-list">
+            <li>Abre la aplicación web en tu navegador o inicia la app móvil en tu teléfono Android.</li>
+            <li>Ingresa tu correo institucional (`ejemplo@uagrm.edu.bo`) y tu contraseña secreta.</li>
+            <li>Haz clic en el botón <strong>"Iniciar Sesión"</strong>.</li>
+            <li>El sistema valida tu token JWT de autenticación y te conduce a tu espacio de trabajo:
+              <ul>
+                <li><strong>Administrador:</strong> Dashboard General con semáforo de flota (`OK`, `ALERT`, `CRITICAL`), gráficos de escaneos y acceso a vehículos.</li>
+                <li><strong>Mecánico:</strong> Módulo de Órdenes de Trabajo pendientes, en progreso y con hipótesis de IA.</li>
+                <li><strong>Inspector (App Móvil):</strong> Catálogo de vehículos asignados con botón directo para conectar el escáner Bluetooth e iniciar la inspección.</li>
+              </ul>
+            </li>
+          </ol>
+
+          <h4 class="subheading">Credenciales de prueba (Datos de desarrollo / demostración)</h4>
+          <p>Para entornos de capacitación y pruebas con datos de ejemplo precargados, la contraseña en todas las cuentas es <code>taller123</code>:</p>
+
+          <div class="table-responsive">
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Rol</th>
+                  <th style="width: 50%;">Correo Electrónico</th>
+                  <th style="width: 25%;">Contraseña</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="role-badge role-badge-admin">Administrador</span></td>
+                  <td><code>admin@uagrm.edu.bo</code></td>
+                  <td><code>taller123</code></td>
+                </tr>
+                <tr>
+                  <td><span class="role-badge role-badge-docente">Mecánico</span></td>
+                  <td><code>mecanico@uagrm.edu.bo</code></td>
+                  <td><code>taller123</code></td>
+                </tr>
+                <tr>
+                  <td><span class="role-badge role-badge-student">Inspector</span></td>
+                  <td><code>inspector@uagrm.edu.bo</code></td>
+                  <td><code>taller123</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="p0-sec5" class="guide-block">
+          <h3 class="heading-number">5. Estados de los Vehículos y Severidad de Escaneos</h3>
+          <p>La plataforma utiliza un sistema de alertas determinístico de semáforo que clasifica en tiempo real la salud de cada unidad automotriz:</p>
+
+          <div class="interface-zones-grid">
+            <div class="zone-card" style="border-top: 4px solid #10b981;">
+              <span class="zone-number">OK</span>
+              <h4>Estado Operativo (Verde)</h4>
+              <p>El vehículo se encuentra en condiciones óptimas. No registra códigos de falla confirmados, el Check Engine está apagado y no tiene órdenes de trabajo abiertas pendientes.</p>
+            </div>
+            <div class="zone-card" style="border-top: 4px solid #f59e0b;">
+              <span class="zone-number">ALERT</span>
+              <h4>Estado de Alerta (Amarillo)</h4>
+              <p>Se detectaron fallas menores o pendientes (Mode 07), o monitores de emisiones incompletos (sospecha de desconexión de batería). Requiere seguimiento preventivo.</p>
+            </div>
+            <div class="zone-card" style="border-top: 4px solid #ef4444;">
+              <span class="zone-number">CRIT</span>
+              <h4>Estado Crítico (Rojo)</h4>
+              <p>Fallas graves de encendido, inyección o emisiones (ej. P0300, P0301) o códigos recurrentes. Se ha generado una Orden de Trabajo inmediata y se recomienda restringir la salida a campo.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="p0-sec6" class="guide-block">
+          <h3 class="heading-number">6. Glosario rápido de términos técnicos</h3>
+          <div class="table-responsive">
+            <table class="styled-table glossary-table">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Término</th>
+                  <th style="width: 75%;">Definición</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>OBD-II</strong></td>
+                  <td>On-Board Diagnostics II. Protocolo estándar de diagnóstico y comunicación con la computadora del vehículo presente en automóviles desde 1996 en adelante.</td>
+                </tr>
+                <tr>
+                  <td><strong>ELM327</strong></td>
+                  <td>Microcontrolador programado que traduce los comandos AT de la computadora del vehículo hacia interfaces Bluetooth, WiFi o USB.</td>
+                </tr>
+                <tr>
+                  <td><strong>DTC</strong></td>
+                  <td>Diagnostic Trouble Code. Código alfanumérico estandarizado de 5 caracteres (ej. P0300) que identifica la causa y ubicación de una avería.</td>
+                </tr>
+                <tr>
+                  <td><strong>ECU</strong></td>
+                  <td>Engine Control Unit. Computadora central del vehículo encargada de controlar el tren motriz, inyección de combustible y monitoreo de sensores.</td>
+                </tr>
+                <tr>
+                  <td><strong>MIL / Check Engine</strong></td>
+                  <td>Malfunction Indicator Lamp. Luz testigo ámbar en el panel de instrumentos del automóvil que se ilumina cuando existe una falla de emisiones o mecánica.</td>
+                </tr>
+                <tr>
+                  <td><strong>Readiness Monitors</strong></td>
+                  <td>Monitores de preparación (Modo 01 PID 01). Comprueban si el vehículo completó las pruebas internas de emisiones (catalizador, sensor O2, evaporativo).</td>
+                </tr>
+                <tr>
+                  <td><strong>Hipótesis de IA</strong></td>
+                  <td>Análisis interpretativo generado por Claude API (Anthropic) que describe en lenguaje técnico las causas probables y los pasos de verificación física recomendados.</td>
+                </tr>
+                <tr>
+                  <td><strong>Orden de Trabajo</strong></td>
+                  <td>Registro formal de servicio asignado a un mecánico que documenta la intervención correctiva, bitácora de repuestos y cierre con firma responsable.</td>
+                </tr>
+                <tr>
+                  <td><strong>n8n</strong></td>
+                  <td>Motor de automatización de flujos de trabajo encargado de despachar avisos inmediatos vía Telegram, Email y Notificaciones Push (FCM).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================================================== -->
+      <!-- PARTE 1: MANUAL DEL ADMINISTRADOR (DASHBOARD WEB) -->
+      <!-- ======================================================== -->
+      <article class="manual-section" id="section-parte1" data-role-section="parte1">
+        <div class="document-header">
+          <div class="doc-meta-bar">
+            <span class="doc-badge badge-admin">Rol: Administrador</span>
+            <span class="doc-pages">Páginas 1 – 7</span>
+          </div>
+          <h1 class="doc-title">Manual de Usuario — Sistema IoT Vehicular</h1>
+          <h2 class="doc-subtitle">Parte 1 · Manual del Administrador de Flota</h2>
+          <div class="callout callout-intro">
+            El <strong>Administrador de Flota</strong> es el responsable de coordinar la logística automotriz de la universidad, gestionar el inventario de vehículos, supervisar el desempeño del taller, asignar órdenes de trabajo a los mecánicos y auditar el historial de escaneos e hipótesis de inteligencia artificial para garantizar la seguridad operativa de cada móvil.
+          </div>
+        </div>
+
+        <section id="p1-sec1" class="guide-block">
+          <h3 class="heading-number">1. Módulos del Panel de Administración</h3>
+          <p>Al acceder con credenciales de Administrador a la plataforma web (`/dashboard`), dispondrás de los siguientes módulos en el menú lateral:</p>
+          <div class="table-responsive">
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Módulo</th>
+                  <th style="width: 75%;">Función Operativa</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Dashboard</strong></td>
+                  <td>Vista ejecutiva del estado general de la flota, métricas de vehículos (`OK`, `ALERT`, `CRITICAL`), volumen de escaneos y órdenes abiertas.</td>
+                </tr>
+                <tr>
+                  <td><strong>Vehículos</strong></td>
+                  <td>Catálogo maestro de unidades automotrices: registro, edición de ficha técnica (VIN, placa, alias, marca, modelo, año) y asignación de inspector responsable.</td>
+                </tr>
+                <tr>
+                  <td><strong>Escaneos</strong></td>
+                  <td>Historial telemétrico de todas las inspecciones realizadas en campo, detalles de voltaje de batería, DTCs leídos y acceso a la hipótesis de IA.</td>
+                </tr>
+                <tr>
+                  <td><strong>Órdenes de Trabajo</strong></td>
+                  <td>Gestión integral del ciclo de vida de mantenimiento: asignación a mecánicos, cambio de prioridades, bitácoras de servicio y cierre de órdenes.</td>
+                </tr>
+                <tr>
+                  <td><strong>Usuarios</strong></td>
+                  <td>Administración de cuentas de acceso, roles (`ADMIN`, `MECHANIC`, `INSPECTOR`), reseteo de claves y activación/desactivación de personal.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="p1-sec2" class="guide-block">
+          <h3 class="heading-number">2. Supervisión del Dashboard de Flota</h3>
+          <p>El Dashboard central reúne los indicadores clave de desempeño (KPIs) en tiempo real:</p>
+          <ul class="feature-card-list">
+            <li>
+              <strong>Semáforo de Disponibilidad de Flota:</strong> Tarjetas numéricas con el total de unidades activas, cuántas se encuentran en estado óptimo (verde), cuántas en advertencia (amarillo) y cuántas en estado crítico (rojo).
+            </li>
+            <li>
+              <strong>Alertas Urgentes de Mantenimiento:</strong> Listado prioritario de vehículos que registraron fallas severas en sus últimos escaneos (por ejemplo, fallos de encendido `P0300` o códigos recurrentes) que impiden su uso seguro en comisiones de campo.
+            </li>
+            <li>
+              <strong>Órdenes de Trabajo Activas:</strong> Resumen de órdenes abiertas (`OPEN`), órdenes en taller (`IN_PROGRESS`) y tiempos promedio de resolución.
+            </li>
+            <li>
+              <strong>Exportación Rápida a PDF:</strong> Botón directo para generar reportes ejecutivos consolidados para la Dirección de Transporte o Decanaturas.
+            </li>
+          </ul>
+        </section>
+
+        <section id="p1-sec3" class="guide-block">
+          <h3 class="heading-number">3. Gestión del Catálogo de Vehículos</h3>
+          <p>Accede a la sección <strong>Vehículos</strong> (`/dashboard/vehicles`) para controlar las unidades asignadas a las diferentes unidades académicas y facultades.</p>
+
+          <h4 class="subheading">Registrar un nuevo vehículo</h4>
+          <ol class="steps-list">
+            <li>Haz clic en el botón <strong>"+ Nuevo Vehículo"</strong>.</li>
+            <li>Completa los datos de la ficha técnica:
+              <ul>
+                <li><strong>Placa de control:</strong> Código oficial (ej. `5521-TAC`).</li>
+                <li><strong>Número de Chasis / VIN:</strong> 17 caracteres alfanuméricos estandarizados.</li>
+                <li><strong>Alias / Dependencia:</strong> Nombre representativo (ej. <em>"Camioneta Facultad Ciencias Agrícolas"</em>).</li>
+                <li><strong>Marca, Modelo y Año:</strong> Ej. Toyota Tacoma 2021.</li>
+                <li><strong>Inspector Responsable:</strong> Selecciona de la lista de usuarios al encargado habitual de conducir o revisar el vehículo.</li>
+              </ul>
+            </li>
+            <li>Pulsa <strong>Guardar Vehículo</strong>. La unidad quedará disponible de inmediato en la aplicación móvil del inspector para realizar escaneos.</li>
+          </ol>
+
+          <h4 class="subheading">Ficha 360° del Vehículo</h4>
+          <p>Al hacer clic sobre cualquier vehículo de la lista, accederás a su expediente histórico completo:</p>
+          <ul class="checklist-bullet">
+            <li><strong>Línea de tiempo de escaneos:</strong> Histórico de todas las inspecciones OBD-II realizadas con fecha, inspector y severidad.</li>
+            <li><strong>Evolución de fallas DTC:</strong> Registro acumulativo de códigos que aparecieron y fueron resueltos en el pasado.</li>
+            <li><strong>Historial de Órdenes de Trabajo:</strong> Intervenciones mecánicas realizadas, repuestos cambiados y firma del mecánico que cerró el servicio.</li>
+          </ul>
+        </section>
+
+        <section id="p1-sec4" class="guide-block">
+          <h3 class="heading-number">4. Asignación y Cierre de Órdenes de Trabajo</h3>
+          <p>El sistema genera automáticamente una <strong>Orden de Trabajo</strong> cuando un escaneo arroja códigos con severidad media, alta o crítica. Como Administrador, eres el responsable de coordinar la atención técnica:</p>
+
+          <div class="table-responsive">
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th style="width: 20%;">Acción</th>
+                  <th style="width: 80%;">Procedimiento</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Asignar Mecánico</strong></td>
+                  <td>En la vista de la orden (`/dashboard/work-orders/[id]`), pulsa en <em>"Asignar Mecánico"</em> y selecciona al técnico disponible. El mecánico recibirá una notificación por correo y Telegram para comenzar el diagnóstico.</td>
+                </tr>
+                <tr>
+                  <td><strong>Cambiar Prioridad</strong></td>
+                  <td>Ajusta el nivel entre <em>BAJA</em>, <em>MEDIA</em>, <em>ALTA</em> o <em>CRÍTICA</em> según la urgencia operativa de la unidad (ej. vehículo con viaje programado al día siguiente).</td>
+                </tr>
+                <tr>
+                  <td><strong>Autorizar Retorno a Operación</strong></td>
+                  <td>Una vez que el mecánico completa las reparaciones físicas y marca la orden, el administrador verifica el informe final y <strong>cierra la orden formalmente</strong>. Al cerrarse la orden y registrar un escaneo limpio posterior, el estado del vehículo retorna automáticamente a <code>OK (Verde)</code>.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="p1-sec5" class="guide-block">
+          <h3 class="heading-number">5. Administración de Usuarios y Cuentas</h3>
+          <p>En el módulo <strong>Usuarios</strong> (`/dashboard/users`), puedes:</p>
+          <ul class="checklist-bullet">
+            <li><strong>Crear cuentas de personal:</strong> Registrar nuevos administradores, mecánicos de taller o inspectores de campo con su correo institucional.</li>
+            <li><strong>Editar datos y roles:</strong> Reasignar roles operativos si un usuario cambia de funciones en la institución.</li>
+            <li><strong>Resetear contraseñas:</strong> Asignar claves temporales seguras a usuarios que hayan olvidado su acceso.</li>
+            <li><strong>Desactivar usuarios:</strong> La desactivación se realiza como <strong>borrado lógico (soft delete)</strong>: el usuario no podrá iniciar sesión pero todos sus escaneos y firmas mecánicas se conservan íntegros en el historial.</li>
+          </ul>
+        </section>
+
+        <section id="p1-sec6" class="guide-block">
+          <h3 class="heading-number">6. Checklist Operativo del Administrador</h3>
+          
+          <div class="terminal-card">
+            <div class="terminal-title">Ruta de Control Diario / Semanal:</div>
+            <pre><code>[x] 1. Abrir Dashboard y verificar vehÃculos en estado CRITICAL o ALERT
+[x] 2. Revisar la bandeja de Órdenes de Trabajo nuevas generadas por escaneos
+[x] 3. Asignar las órdenes abiertas a los mecánicos de turno
+[x] 4. Validar el informe de cierre y autorizar el retorno operativo de los móviles reparados
+[x] 5. Exportar reporte PDF de flota para la Dirección de Transporte</code></pre>
+          </div>
+        </section>
+
+        <section id="p1-sec7" class="guide-block">
+          <h3 class="heading-number">7. Preguntas Frecuentes (Administrador)</h3>
+          <div class="faq-accordion">
+            <div class="faq-item">
+              <h5 class="faq-q">¿Un vehículo vuelve a estar en verde (OK) automáticamente al hacer un escaneo sin fallas?</h5>
+              <p class="faq-a">No si tiene una orden de trabajo abierta. Para que el vehículo retorne a estado <code>OK</code>, primero la orden de reparación debe ser cerrada formalmente por el mecánico o administrador y luego registrarse un escaneo limpio posterior.</p>
+            </div>
+            <div class="faq-item">
+              <h5 class="faq-q">¿Qué pasa si un escaneo detecta el mismo código de falla dos veces seguidas?</h5>
+              <p class="faq-a">El sistema detecta automáticamente la <strong>recurrencia</strong>. En lugar de crear órdenes duplicadas innecesarias, eleva la prioridad de la orden abierta a <code>CRÍTICA</code> y notifica con urgencia al equipo de taller.</p>
+            </div>
+            <div class="faq-item">
+              <h5 class="faq-q">¿Cómo se envían las alertas automáticas?</h5>
+              <p class="faq-a">El backend se comunica mediante webhooks seguros con una instancia de automatización <strong>n8n</strong>, la cual despacha mensajes a un canal de Telegram de mecánicos, correos electrónicos y notificaciones push a la app móvil de los responsables.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================================================== -->
+      <!-- PARTE 2: MANUAL DEL MECÁNICO (TALLER Y DIAGNÓSTICO IA) -->
+      <!-- ======================================================== -->
+      <article class="manual-section" id="section-parte2" data-role-section="parte2">
+        <div class="document-header">
+          <div class="doc-meta-bar">
+            <span class="doc-badge badge-docente">Rol: Mecánico</span>
+            <span class="doc-pages">Páginas 1 – 6</span>
+          </div>
+          <h1 class="doc-title">Manual de Usuario — Sistema IoT Vehicular</h1>
+          <h2 class="doc-subtitle">Parte 2 · Manual del Mecánico de Taller</h2>
+          <div class="callout callout-intro">
+            Esta guía instruye a los <strong>técnicos mecánicos</strong> en el uso de la plataforma: cómo consultar las órdenes de trabajo asignadas, interpretar con criterio técnico las <strong>hipótesis generadas por la Inteligencia Artificial</strong>, seguir los pasos de comprobación física en el motor, registrar notas de reparación y cerrar las órdenes para garantizar la seguridad de la flota.
+          </div>
+        </div>
+
+        <section id="p2-sec1" class="guide-block">
+          <h3 class="heading-number">1. Flujo de Trabajo en Taller</h3>
+          <p>El trabajo del mecánico se centraliza en el módulo de <strong>Órdenes de Trabajo</strong> (`/dashboard/work-orders` en la web o en la sección órdenes de la app móvil):</p>
+          
+          <div class="interface-zones-grid">
+            <div class="zone-card">
+              <span class="zone-number">1</span>
+              <h4>Tomar Orden (Autoasignación)</h4>
+              <p>Revisa la lista de órdenes en estado <code>OPEN</code>. Puedes tomar una orden abierta para asignártela directamente y comenzar la intervención técnica.</p>
+            </div>
+            <div class="zone-card">
+              <span class="zone-number">2</span>
+              <h4>Diagnóstico e Hipótesis IA</h4>
+              <p>Abre el detalle de la orden para consultar los DTCs detectados, el voltaje de batería y la <strong>hipótesis estructurada de Claude AI</strong>.</p>
+            </div>
+            <div class="zone-card">
+              <span class="zone-number">3</span>
+              <h4>Reparación y Cierre</h4>
+              <p>Pasa el estado a <code>IN_PROGRESS</code>, realiza las pruebas físicas en el vehículo, documenta el trabajo en las notas y finaliza la orden como <code>COMPLETED</code>.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="p2-sec2" class="guide-block">
+          <h3 class="heading-number">2. Cómo Interpretar la Hipótesis Asistida por IA ⭐</h3>
+          <p>Cuando un escaneo detecta fallas, el motor de inteligencia artificial (Claude API) procesa los DTCs en conjunto con el modelo y año del vehículo para entregar un diagnóstico estructurado en 3 componentes esenciales:</p>
+
+          <div class="vark-cards-grid">
+            <div class="vark-card vark-v">
+              <div class="vark-letter">1</div>
+              <div class="vark-details">
+                <h4>Causas Probables</h4>
+                <p>Lista jerárquica de componentes con mayor probabilidad de falla y su nivel de confianza (ALTA, MEDIA, BAJA).</p>
+              </div>
+            </div>
+            <div class="vark-card vark-r">
+              <div class="vark-letter">2</div>
+              <div class="vark-details">
+                <h4>Pasos de Verificación Física</h4>
+                <p>Guía paso a paso de pruebas mecánicas y eléctricas recomendadas antes de reemplazar repuestos costosos.</p>
+              </div>
+            </div>
+            <div class="vark-card vark-k">
+              <div class="vark-letter">3</div>
+              <div class="vark-details">
+                <h4>Correlaciones de Fallas</h4>
+                <p>Explicación técnica de cómo interactúan múltiples códigos entre sí (ej. por qué P0300 y P0301 tienen la misma raíz).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-warning">
+            <strong>Criterio profesional obligatorio:</strong> La Inteligencia Artificial es un <strong>asistente acelerador de diagnóstico</strong>, no un sustituto de la experiencia del mecánico. El técnico debe realizar siempre las mediciones físicas con multímetro, manómetros o pruebas de intercambio antes de ordenar el cambio definitivo de componentes.
+          </div>
+
+          <h4 class="subheading">Ejemplo Real de Hipótesis en Plataforma (Toyota Tacoma P0300 / P0301)</h4>
+          <div class="terminal-card">
+            <div class="terminal-title">Salida Estructurada de la IA:</div>
+            <pre><code>RESUMEN: Fallo de encendido activo focalizado en cilindro 1 (P0301) y aleatorio (P0300).
+CAUSAS PROBABLES:
+  - Bujía o bobina de encendido del cilindro 1 degradada (Confianza: MEDIA)
+  - Pulso o resistencia eléctrica del inyector 1 fuera de rango (Confianza: BAJA)
+PASOS DE VERIFICACIÓN SUGERIDOS:
+  1. Inspeccionar visualmente bobina y conector eléctrico del cilindro 1.
+  2. Intercambiar la bobina del cilindro 1 con la del cilindro 2 y verificar si la falla se traslada al P0302.
+  3. Desmontar y comparar la bujía del cilindro 1 con el resto.
+  4. Medir resistencia interna del inyector del cilindro 1 con multímetro.</code></pre>
+          </div>
+        </section>
+
+        <section id="p2-sec3" class="guide-block">
+          <h3 class="heading-number">3. Gestión de la Orden de Trabajo</h3>
+          <p>Dentro de la pantalla de detalle de la orden (`/dashboard/work-orders/[id]`):</p>
+          <ol class="steps-list">
+            <li><strong>Iniciar el trabajo:</strong> Presiona el botón <strong>"Marcar En Progreso"</strong>. Esto comunica a todo el sistema que el móvil está siendo atendido en taller.</li>
+            <li><strong>Bitácora técnica:</strong> En el área de texto <em>Notas del Mecánico</em>, registra las observaciones encontradas durante la inspección (ej. <em>"Se encontró bujía 1 con excesivo desgaste de electrodo; se reemplazó juego completo de bujías"</em>).</li>
+            <li><strong>Prueba post-reparación:</strong> Enciende el motor, verifica la estabilidad de marcha y realiza un nuevo escaneo OBD-II para confirmar que los códigos de falla hayan desaparecido y no existan fallas pendientes.</li>
+            <li><strong>Cierre de orden:</strong> Pulsa <strong>"Cerrar como Completada"</strong>. Tu nombre, fecha y hora exacta quedarán registrados en el sistema como firma de responsabilidad técnica.</li>
+          </ol>
+        </section>
+
+        <section id="p2-sec4" class="guide-block">
+          <h3 class="heading-number">4. Preguntas Frecuentes (Mecánico)</h3>
+          <div class="faq-accordion">
+            <div class="faq-item">
+              <h5 class="faq-q">¿Puedo cerrar una orden que está asignada a otro compañero mecánico?</h5>
+              <p class="faq-a">No. Por razones de trazabilidad y responsabilidad de taller, un mecánico solo puede modificar o cerrar las órdenes que tiene explícitamente asignadas a su nombre (el administrador sí tiene permisos para reasignar o cerrar cualquier orden si fuera necesario).</p>
+            </div>
+            <div class="faq-item">
+              <h5 class="faq-q">¿Qué debo hacer si borro los códigos pero el código es PERMANENT (Modo 0A)?</h5>
+              <p class="faq-a">Los códigos permanentes no se pueden borrar forzadamente por escáner. Es una protección de la normativa OBD-II. Una vez reparada la falla física, el vehículo debe completar un <em>drive cycle</em> (ciclo de conducción con variadas velocidades y temperaturas); la propia computadora del auto apagará el código permanente tras verificar que la falla ya no existe.</p>
+            </div>
+            <div class="faq-item">
+              <h5 class="faq-q">¿Dónde puedo ver los escaneos anteriores de un vehículo para saber qué fallas tuvo antes?</h5>
+              <p class="faq-a">En el módulo <em>Vehículos</em>, haz clic en la placa del móvil para entrar a su expediente 360°; allí verás la lista cronológica de todos los escaneos registrados en su historia.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================================================== -->
+      <!-- PARTE 3: MANUAL DEL INSPECTOR (APP MÓVIL Y ESCANEO OBD) -->
+      <!-- ======================================================== -->
+      <article class="manual-section" id="section-parte3" data-role-section="parte3">
+        <div class="document-header">
+          <div class="doc-meta-bar">
+            <span class="doc-badge badge-student">Rol: Inspector / Conductor</span>
+            <span class="doc-pages">Páginas 1 – 6</span>
+          </div>
+          <h1 class="doc-title">Manual de Usuario — Sistema IoT Vehicular</h1>
+          <h2 class="doc-subtitle">Parte 3 · Manual del Inspector de Flota (App Móvil Android)</h2>
+          <div class="callout callout-intro">
+            Esta guía orienta a los <strong>inspectores de movilidad y conductores asignados</strong> en el manejo de la <strong>aplicación móvil Flutter para Android</strong>: vinculación por Bluetooth con el adaptador ELM327, realización de escaneos preventivos periódicos, interpretación de luces de preparación (Readiness) y uso del Monitor en Vivo de parámetros del motor.
+          </div>
+        </div>
+
+        <section id="p3-sec1" class="guide-block">
+          <h3 class="heading-number">1. Preparación del Equipo y Adaptador ELM327</h3>
+          <p>Antes de comenzar el escaneo preventivo, asegúrate de contar con los siguientes elementos:</p>
+          <ul class="checklist-bullet">
+            <li><strong>Smartphone Android:</strong> Con Bluetooth y datos móviles o WiFi encendidos.</li>
+            <li><strong>Escáner OBD-II ELM327 Bluetooth:</strong> Dispositivo estándar Bluetooth Classic (SPP).</li>
+            <li><strong>Ubicación del puerto OBD-II en el vehículo:</strong> El conector trapezoidal de 16 pines se localiza normalmente bajo el tablero del conductor (cerca del pedal de freno/embrague o junto a la caja de fusibles).</li>
+          </ul>
+
+          <div class="quote-box">
+            <strong>Recomendación importante:</strong> Conecta el adaptador ELM327 firmemente en el conector del automóvil con el motor apagado. Verás encenderse el LED indicador de alimentación (rojo o verde).
+          </div>
+        </section>
+
+        <section id="p3-sec2" class="guide-block">
+          <h3 class="heading-number">2. Emparejamiento Bluetooth en Android</h3>
+          <ol class="steps-list">
+            <li>Conecta el adaptador ELM327 en el puerto OBD-II del vehículo.</li>
+            <li>Gira la llave de contacto del automóvil a la posición <strong>ON (Contacto encendido, sin encender el motor)</strong> o enciende el motor.</li>
+            <li>En tu teléfono Android, entra a <em>Ajustes → Bluetooth</em> y busca dispositivos cercanos.</li>
+            <li>Selecciona el dispositivo llamado habitualmente <code>OBDII</code>, <code>OBD2</code> o <code>ELM327</code>.</li>
+            <li>Si solicita código PIN de emparejamiento, escribe <code>1234</code> o <code>0000</code>.</li>
+            <li>Una vez emparejado en el sistema operativo, abre la aplicación <strong>Taller UAGRM</strong>.</li>
+          </ol>
+        </section>
+
+        <section id="p3-sec3" class="guide-block">
+          <h3 class="heading-number">3. Realizar un Escaneo OBD-II Paso a Paso</h3>
+          <p>Este es el flujo principal para registrar la condición técnica del móvil en la nube:</p>
+
+          <ol class="steps-list">
+            <li><strong>Seleccionar Vehículo:</strong> En la pantalla principal de la app, pulsa sobre la placa del vehículo asignado que vas a inspeccionar (ej. <code>5521-TAC - Toyota Tacoma</code>).</li>
+            <li><strong>Conectar Escáner:</strong> Presiona el botón verde <strong>"Conectar Escáner Bluetooth"</strong> y elige el dispositivo ELM327 emparejado.</li>
+            <li><strong>Inicialización automática:</strong> La aplicación enviará la secuencia de comandos AT (`ATZ`, `ATE0`, `ATDPN`) para reconocer el protocolo del vehículo (CAN, ISO 9141, KWP2000) y medirá el <strong>voltaje de batería</strong> (ej. 13.3V).</li>
+            <li><strong>Lectura de Datos y DTCs:</strong> La app consultará de forma autónoma:
+              <ul>
+                <li>Estado de los monitores de preparación de emisiones (Readiness - Modo 01 PID 01).</li>
+                <li>Códigos de falla confirmados (Modo 03).</li>
+                <li>Códigos de falla pendientes (Modo 07).</li>
+                <li>Códigos de falla permanentes (Modo 0A).</li>
+              </ul>
+            </li>
+            <li><strong>Notas de inspección:</strong> Agrega comentarios breves de campo si corresponde (ej. <em>"Inspección previa a comisión a Okinawa"</em>).</li>
+            <li><strong>Enviar a la Plataforma:</strong> Pulsa <strong>"Guardar y Enviar Escaneo"</strong>. Los datos viajarán de inmediato a la base de datos central y se activará la interpretación de IA si hay fallas presentes.</li>
+          </ol>
+
+          <div class="callout callout-info">
+            <strong>Modo Simulador Integrado:</strong> Si te encuentras en una zona sin vehículo físico o estás realizando capacitaciones, la app cuenta con un <strong>Simulador OBD-II integrado</strong> con escenarios preconfigurados (`tacoma_p0300`, `coaster_battery_reset`, `vehiculo_ok`) para practicar el flujo sin necesidad de hardware.
+          </div>
+        </section>
+
+        <section id="p3-sec4" class="guide-block">
+          <h3 class="heading-number">4. Uso del "Monitor en Vivo"</h3>
+          <p>La aplicación móvil incluye una función de <strong>telemetría local en tiempo real</strong> mientras el teléfono permanezca conectado por Bluetooth al vehículo:</p>
+          <ul class="checklist-bullet">
+            <li><strong>RPM del Motor:</strong> Revoluciones por minuto actuales con alerta visual si excede límites seguros.</li>
+            <li><strong>Temperatura del Refrigerante (°C):</strong> Monitoreo crítico para prevenir recalentamientos de motor en rutas exigentes.</li>
+            <li><strong>Velocidad del Vehículo (km/h):</strong> Velocidad calculada por el sensor del tren motriz.</li>
+            <li><strong>Voltaje de Batería y Alternador (V):</strong> Permite verificar si el alternador está cargando adecuadamente (13.5V – 14.5V con motor encendido).</li>
+          </ul>
+
+          <div class="quote-box">
+            <strong>Aclaración técnica:</strong> El Monitor en Vivo procesa los datos <strong>exclusivamente en la pantalla de tu teléfono</strong> en tiempo real. No consume tus datos móviles de internet transmitiendo telemetría continua a la nube.
+          </div>
+        </section>
+
+        <section id="p3-sec5" class="guide-block">
+          <h3 class="heading-number">5. Preguntas Frecuentes (Inspector)</h3>
+          <div class="faq-accordion">
+            <div class="faq-item">
+              <h5 class="faq-q">La app dice "No se pudo conectar con el adaptador Bluetooth", ¿qué reviso?</h5>
+              <p class="faq-a">Verifica: 1) Que el conector ELM327 tenga su luz LED encendida; 2) Que la llave del vehículo esté en posición de contacto ON o motor en marcha; 3) Que el dispositivo esté vinculado en los ajustes de Bluetooth de Android antes de presionar conectar en la app.</p>
+            </div>
+            <div class="faq-item">
+              <h5 class="faq-q">¿Por qué el escaneo marcó sospecha de desconexión de batería?</h5>
+              <p class="faq-a">Cuando la batería del auto se desconecta para mantenimiento, la computadora pierde su memoria temporal y los <em>Readiness Monitors</em> (catalizador, sensores) se reinician a "incompletos". La app detecta este patrón y recomienda re-escanear tras un recorrido de prueba normal.</p>
+            </div>
+            <div class="faq-item">
+              <h5 class="faq-q">¿Puedo usar la aplicación móvil en un iPhone o iPad?</h5>
+              <p class="faq-a">No. Apple restringe el uso de Bluetooth Classic estándar a accesorios con certificación especial MFi. Por diseño del proyecto institucional, la aplicación móvil está desarrollada exclusivamente para teléfonos Android.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- Back to top button -->
+      <button id="backToTop" class="btn-floating no-print" title="Volver arriba">↑</button>
+    </main>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast no-print">Texto de notificación</div>
+
+  <!-- Print footer info for PDF output -->
+  <div class="print-footer-info">
+    <span>Plataforma de Diagnóstico Vehicular Preventivo OBD-II con IA — Manuales de Usuario UAGRM</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
